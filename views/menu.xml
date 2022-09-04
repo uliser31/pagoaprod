@@ -1,0 +1,182 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <!--
+    <record model="ir.ui.view" id="pagoaprod.list">
+      <field name="name">Pagoaprod list</field>
+      <field name="model">pagoaprod.pagoaprod</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    -->
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="pagoaprod.action_window">
+      <field name="name">Entidad window</field>
+      <field name="res_model">pagoaprod.pagoaprod</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="pagoaprod.socio_action_window">
+      <field name="name">Socios window</field>
+      <field name="res_model">res.partner</field>
+      <field name="view_mode">kanban,form,tree</field>
+    </record>
+
+ <!--
+    <record model="ir.actions.act_window" id="pagoaprod.action_window_productor">
+      <field name="name">Productores</field>
+      <field name="res_model">pagoaprod.productor</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="pagoaprod.action_window_trabajador">
+      <field name="name">Trabajadores</field>
+      <field name="res_model">pagoaprod.trabajador</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+
+    <record model="ir.actions.act_window" id="pagoaprod.action_window_cooperativista">
+      <field name="name">Cooperativista</field>
+      <field name="res_model">pagoaprod.cooperativista</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+-->
+    <record model="ir.actions.act_window" id="pagoaprod.action_window_producto">
+      <field name="name">Productos</field>
+      <field name="res_model">product.product</field>
+      <field name="view_mode">kanban,form,tree</field>
+    </record>
+<!--
+    <record model="ir.actions.act_window" id="pagoaprod.action_window_unid_medida">
+      <field name="name">Unidad de Medida</field>
+      <field name="res_model">pagoaprod.unid_medida</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="pagoaprod.action_window_categoria">
+      <field name="name">Categoria</field>
+      <field name="res_model">pagoaprod.categoria</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="pagoaprod.action_window_producto_categoria_precio">
+      <field name="name">Producto Categoria Precio</field>
+      <field name="res_model">pagoaprod.producto.categoria.precio</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="pagoaprod.action_window_insumo">
+      <field name="name">Insumos/Servicios</field>
+      <field name="res_model">pagoaprod.insumo</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="pagoaprod.action_window_consumible_precio">
+      <field name="name">Insumos/Servisio Precio</field>
+      <field name="res_model">pagoaprod.consumible.precio</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="pagoaprod.action_window_anno">
+      <field name="name">Años</field>
+      <field name="res_model">pagoaprod.anno</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="pagoaprod.action_window_mes">
+      <field name="name">Meses</field>
+      <field name="res_model">pagoaprod.mes</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <record model="ir.actions.act_window" id="pagoaprod.action_window_factura">
+      <field name="name">Facturas</field>
+      <field name="res_model">pagoaprod.factura</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+<!--
+    <record model="ir.actions.act_window" id="pagoaprod.action_window_nominaanno">
+      <field name="name">Nomina Año</field>
+      <field name="res_model">pagoaprod.nominaanno</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+    <record model="ir.actions.act_window" id="pagoaprod.action_window_conciliacion">
+      <field name="name">Conciliacion</field>
+      <field name="res_model">pagoaprod.conciliacion</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+<!--
+    <record model="ir.actions.act_window" id="pagoaprod.action_window_nomina">
+      <field name="name">Nomina</field>
+      <field name="res_model">pagoaprod.nomina</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+    <record model="ir.actions.act_window" id="pagoaprod.action_window_cargo">
+      <field name="name">Cargo</field>
+      <field name="res_model">pagoaprod.cargo</field>
+      <field name="view_mode">tree,form</field>
+     </record>
+
+
+    <!-- Top menu item -->
+
+    <menuitem name="Pago a Productores" id="pagoaprod.menu_root"/>
+
+    <!-- menu categories -->
+    <menuitem name="Entidad" id="pagoaprod.menu_entidad" parent="pagoaprod.menu_root" sequence="10"/>
+    <menuitem name="CCS" id="pagoaprod.menu_ccs" parent="pagoaprod.menu_entidad" action="pagoaprod.action_window" sequence="11"/>
+   
+    <menuitem name="Socios" id="pagoaprod.menu_socio" parent="pagoaprod.menu_entidad" action="pagoaprod.socio_action_window" sequence="12"/>
+    <!-- 
+    <menuitem name="Socios" id="pagoaprod.menu_cooperativista" parent="pagoaprod.menu_entidad" action="pagoaprod.action_window_cooperativista" sequence="12"/>
+    
+    <menuitem name="Nomina Año" id="pagoaprod.menu_nominaanno" parent="pagoaprod.menu_entidad" action="pagoaprod.action_window_nominaanno" sequence="14"/>
+    -->
+    <menuitem name="Facturas" id="pagoaprod.menu_factura" parent="pagoaprod.menu_entidad" action="pagoaprod.action_window_factura" sequence="13"/>
+    <menuitem name="Conciliación" id="pagoaprod.menu_conciliacion" parent="pagoaprod.menu_entidad" action="pagoaprod.action_window_conciliacion" sequence="14"/>
+    
+    <menuitem name="Productos" id="pagoaprod.menu_producto" parent="pagoaprod.menu_entidad" action="pagoaprod.action_window_producto" sequence="30"/>
+    <!--
+    <menuitem name="Insumos/Servicios" id="pagoaprod.menu_insumo" parent="pagoaprod.menu_entidad" action="pagoaprod.action_window_insumo" sequence="41"/>
+    <menuitem name="Nomina" id="pagoaprod.menu_nomina" parent="pagoaprod.menu_entidad" action="pagoaprod.action_window_nomina" sequence="14"/>
+
+    
+    <menuitem name="Producto" id="pagoaprod.menu_producto_producto" parent="pagoaprod.menu_producto" action="pagoaprod.action_window_producto" sequence="31"/>
+    <menuitem name="Categoria" id="pagoaprod.menu_categoria" parent="pagoaprod.menu_producto" action="pagoaprod.action_window_categoria" sequence="32"/>
+    <menuitem name="Precio " id="pagoaprod.menu_producto_categoria_precio" parent="pagoaprod.menu_producto" action="pagoaprod.action_window_producto_categoria_precio" sequence="33"/>
+
+    <menuitem name="Insumos/Servicios" id="pagoaprod.menu_consumible" parent="pagoaprod.menu_root" sequence="40"/>
+    
+    <menuitem name="Precio " id="pagoaprod.menu_consumible_precio" parent="pagoaprod.menu_consumible" action="pagoaprod.action_window_consumible_precio" sequence="42"/>
+
+    <menuitem name="Otros" id="pagoaprod.menu_otros" parent="pagoaprod.menu_root" sequence="50"/>
+    <menuitem name="UM" id="pagoaprod.menu_unid_medida" parent="pagoaprod.menu_otros" action="pagoaprod.action_window_unid_medida" sequence="51"/>
+    <menuitem name="Años" id="pagoaprod.menu_anno" parent="pagoaprod.menu_otros" action="pagoaprod.action_window_anno" sequence="52"/>
+    <menuitem name="Meses" id="pagoaprod.menu_mes" parent="pagoaprod.menu_otros" action="pagoaprod.action_window_mes" sequence="53"/>
+    -->
+    <menuitem name="Cargos" id="pagoaprod.menu_cargo" parent="pagoaprod.menu_entidad" action="pagoaprod.action_window_cargo" sequence="54"/>
+
+    <!-- actions -->
+
+    <!-- <menuitem name="Datos" id="pagoaprod.menu_list_entidad" parent="pagoaprod.menu_entidad"
+              action="pagoaprod.action_window"/>
+
+    <menuitem name="Server to list" id="pagoaprod" parent="pagoaprod.menu_2"
+              action="pagoaprod.action_server"/>
+    -->
+  </data>
+</odoo>

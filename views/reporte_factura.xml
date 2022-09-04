@@ -1,0 +1,72 @@
+<odoo>
+  <data>
+      <report id="report_factura_action"
+              string="Factura"
+              model="pagoaprod.factura"
+              report_type="qweb-pdf"
+              name="pagoaprod.report_factura_template" >
+      </report>
+
+    <template id="report_factura_template">
+         <t t-call="web.html_container">
+             <t t-foreach="docs" t-as="o">
+                 <t t-call="web.external_layout">
+                     <div class="page" 
+                          style="margin-left:20px!important"> 
+                         <h1 style="margin:30pt">Factura</h1>
+                         <div class="row">
+                         
+                            <table class="table" style="width:650pt;margin:30pt">
+                              <tr>
+                                <th><h5 style="text-align:right;">Socio:</h5></th>
+                                <th><span t-field="o.socio"/></th>
+                                <th><h5 style="text-align:right;">No.</h5></th>
+                                <th><span t-field="o.name"/></th>
+                                <th><h5 style="text-align:right;">Fecha:</h5></th>
+                                <th><span t-field="o.fecha"/></th>
+                              </tr>
+                              
+                            </table>
+                            <table class="table table-bordered"  style="width:650pt; margin:30pt;">
+                              <!-- Table header -->
+                                <tr>
+                                   <th style="vertical-align: top; width: 150px">Insumo/Servicio </th>
+                                   <th style="vertical-align: top; width: 80px">Cantidad</th>
+                                   <th style="vertical-align: top; width: 100px">Importe</th>
+                               </tr>
+                               <!-- Table rows -->
+                               <t t-foreach="o.factura_linea_ids" t-as="f">
+                                 <!-- Each row -->
+                                 <tr>
+                                   <td style="vertical-align: top; width: 150px">
+                                     <span t-field="f.name"/>
+                                   </td>
+                                   <td style="vertical-align: top; width: 80px">
+                                     <span t-field="f.cantidad"/>
+                                   </td>
+                                   <td style="vertical-align: top; width: 100px">
+                                     <span t-field="f.importe"/>
+                                   </td>
+                                 </tr>
+                                 <!-- Totals in a last row -->
+                                 <t t-if="f_last">
+                                   <tr>
+                                     <td colspan="3">
+                                       <strong>
+                                         <p class="text-right">
+                                           <t t-esc="sum(i.importe for i in o.factura_linea_ids)"/>
+                                         </p>
+                                       </strong>
+                                     </td>
+                                   </tr>
+                                 </t>
+                                </t>
+                            </table>
+                         </div>
+                     </div>
+                 </t>
+             </t>
+         </t>
+    </template>
+  </data>
+</odoo>

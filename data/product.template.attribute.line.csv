@@ -1,0 +1,3 @@
+id,product_tmpl_id:id,attribute_id:id,value_ids:id
+producto_arroz_cascara_tmpl_line,tmpl_arroz_cascara,attributo_cascara,"valor_humedo,valor_seco"
+producto_arroz_consumo_tmpl_line,tmpl_arroz_consumo,attributo_consumo,"valor_30_porciento"

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+      <record model="ir.ui.view" id="pagoaprod.partner_form_view">
+            <field name="name">Cliente</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="DESOFT">
+                        <group>
+                            <field name="cargo_id"/>
+                            <field name="productor"/>
+                            <field name="producto_ids" attrs="{'invisible': [('productor','!=',True)]}"/>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+
+  <!--
+        <record model="ir.ui.view" id="partner_instructor_form_view">
+            <field name="name">partner.instructor</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='sales_purchases']//field[@name='supplier']" position="after">
+                    <field name="instructor" />
+                </xpath>
+            </field>
+        </record>
+    -->
+
+  </data>
+</odoo>

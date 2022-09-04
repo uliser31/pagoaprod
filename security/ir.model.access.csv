@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_pagoaprod_pagoaprod,pagoaprod.pagoaprod,model_pagoaprod_pagoaprod,,1,1,1,1
+access_pagoaprod_socio,pagoaprod.socio,model_pagoaprod_socio,,1,1,1,1
+access_pagoaprod_cargo,pagoaprod.cargo,model_pagoaprod_cargo,,1,1,1,1
+access_pagoaprod_producto,pagoaprod.producto,model_pagoaprod_producto,,1,1,1,1
+access_pagoaprod_mes,pagoaprod.mes,model_pagoaprod_mes,,1,1,1,1
+access_pagoaprod_anno,pagoaprod.anno,model_pagoaprod_anno,,1,1,1,1
+access_pagoaprod_insumo,pagoaprod.insumo,model_pagoaprod_insumo,,1,1,1,1
+access_pagoaprod_factura,pagoaprod.factura,model_pagoaprod_factura,,1,1,1,1
+access_pagoaprod_factura_linea,pagoaprod.factura_linea,model_pagoaprod_factura_linea,,1,1,1,1
+access_pagoaprod_factura_conciliacion,pagoaprod.conciliacion,model_pagoaprod_conciliacion,,1,1,1,1
+access_pagoaprod_nomina_anno,pagoaprod.nomina_anno,model_pagoaprod_nomina_anno,,1,1,1,1

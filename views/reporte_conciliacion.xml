@@ -1,0 +1,73 @@
+<odoo>
+  <data>
+      <report id="report_conciliacion_action"
+        string="Conciliación"
+        model="pagoaprod.conciliacion"
+        report_type="qweb-pdf"
+        name="pagoaprod.report_conciliacion_template" >
+      </report>
+
+    <template id="report_conciliacion_template">
+         <t t-call="web.html_container">
+             <t t-foreach="docs" t-as="o">
+                 <t t-call="web.external_layout">
+                     <div class="page" 
+                          style="margin-left:20px!important"> 
+                         <h1 style="margin:30pt">Conciliación</h1>
+                         <div class="row">
+                            <table class="table" style="width:650pt;margin:30pt">
+                              <tr>
+                                <th><h5 style="text-align:right;">Socio:</h5></th>
+                                <th><span t-field="o.socio"/></th>
+                                <th><h5 style="text-align:right;">Fecha:</h5></th>
+                                <th><span t-field="o.name"/></th>
+                              </tr>
+                              
+                            </table>
+                            <table class="table table-bordered"  style="width:650pt; margin:30pt;">
+                              <!-- Table header -->
+                                <tr>
+                                   <th style="vertical-align: top; width: 80px">Factura </th>
+                                   <th style="vertical-align: top; width: 100px">Fecha</th>
+                                   <th style="vertical-align: top; width: 80px">Importe</th>
+                                   <th style="text-align:center;">Forma de Pago</th>
+                               </tr>
+                               <!-- Table rows -->
+                               <t t-foreach="o.factura_ids" t-as="f">
+                                 <!-- Each row -->
+                                 <tr>
+                                   <td style="vertical-align: top; width: 80px">
+                                     <span t-field="f.name"/>
+                                   </td>
+                                   <td style="vertical-align: top; width: 100px">
+                                     <span t-field="f.fecha"/>
+                                   </td>
+                                   <td style="vertical-align: top; width: 80px">
+                                     <span t-field="f.importe"/>
+                                   </td>
+                                   <td style="text-align:center;">
+                                     <span t-field="f.pago"/>
+                                   </td>
+                                 </tr>
+                                 <!-- Totals in a last row -->
+                                 <t t-if="f_last">
+                                   <tr>
+                                     <td colspan="3">
+                                       <strong>
+                                         <p class="text-right">
+                                           <t t-esc="sum(i.importe for i in o.factura_ids)"/>
+                                         </p>
+                                       </strong>
+                                     </td>
+                                   </tr>
+                                 </t>
+                                </t>
+                            </table>
+                         </div>
+                     </div>
+                 </t>
+             </t>
+         </t>
+    </template>
+  </data>
+</odoo>

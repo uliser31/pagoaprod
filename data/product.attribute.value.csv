@@ -1,0 +1,4 @@
+id,name,attribute_id:id
+valor_humedo, Humedo,attributo_cascara
+valor_seco, Seco,attributo_cascara
+valor_30_porciento,30% Partido,attributo_consumo

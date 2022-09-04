@@ -1,0 +1,383 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="pagoaprod.list">
+      <field name="name">Entidad List</field>
+      <field name="model">pagoaprod.pagoaprod</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+        </tree>
+      </field>
+    </record>
+    
+    <record model="ir.ui.view" id="pagoaprod.form">
+      <field name="name">Entidad Form</field>
+      <field name="model">pagoaprod.pagoaprod</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+          </header>
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="presidente"/>
+              <field name="economico"/>
+            </group>
+            <group>
+              <notebook>
+             <!--   <page string="Socios">
+                  <field name="socio_ids"/>
+                </page> -->
+                <page string="Cargos">
+                  <field name="cargo_ids"/>
+                </page>
+                <!--
+                <page string="Productos">
+                  <field name="producto_ids"/>
+                </page>
+
+                <page string="Insumos">
+                  <field name="insumo_ids"/>
+                </page>
+                -->
+                <page string="Facturas">
+                  <field name="factura_ids"/>
+                </page>
+                <page string="Meses">
+                  <field name="mes_ids"/>
+                </page>
+                <page string="Annos">
+                  <field name="anno_ids"/>
+                </page>
+                <page string="Conciliaciones">
+                  <field name="conciliacion_ids"/>
+                </page>
+                 <page string="Nomina anno">
+                  <field name="nominaanno_ids"/> 
+                </page>
+                
+             </notebook>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+    
+    <record model="ir.ui.view" id="pagoaprod.socio_list">
+      <field name="name">Socios List</field>
+      <field name="model">pagoaprod.socio</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+        </tree>
+      </field>
+    </record>
+    
+    <record model="ir.ui.view" id="pagoaprod.socio_form">
+      <field name="name">Socios Form</field>
+      <field name="model">pagoaprod.socio</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+          </header>
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="entidad_id" invisible='1'/> 
+              <field name="company_id" invisible='1'/> 
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+    
+    <record model="ir.ui.view" id="pagoaprod.cargo_list">
+      <field name="name">Cargos List</field>
+      <field name="model">pagoaprod.cargo</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+        </tree>
+      </field>
+    </record>
+    
+    <record model="ir.ui.view" id="pagoaprod.cargo_form">
+      <field name="name">Cargo Form</field>
+      <field name="model">pagoaprod.cargo</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+          </header>
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="socio_ids"/> 
+              <field name="entidad_id" invisible='1'/> 
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="pagoaprod.producto_list">
+      <field name="name">Productos List</field>
+      <field name="model">pagoaprod.producto</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+        </tree>
+      </field>
+    </record>
+    
+    <record model="ir.ui.view" id="pagoaprod.producto_form">
+      <field name="name">Productos Form</field>
+      <field name="model">pagoaprod.producto</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+          </header>
+          <sheet>
+            <group>
+              <field name="name"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+    
+    <record model="ir.ui.view" id="pagoaprod.insumo_list">
+      <field name="name">Insumos List</field>
+      <field name="model">pagoaprod.insumo</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+        </tree>
+      </field>
+    </record>
+    
+    <record model="ir.ui.view" id="pagoaprod.insumo_form">
+      <field name="name">Insumos Form</field>
+      <field name="model">pagoaprod.insumo</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+          </header>
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="precio"/>
+              <field name="unidad_medida_venta"/>
+              <field name="entidad_id" invisible='1'/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="pagoaprod.mes_list">
+      <field name="name">Meses List</field>
+      <field name="model">pagoaprod.mes</field>
+      <field name="arch" type="xml">
+        <tree decoration-success="state=='confirmado'"
+            decoration-info="state=='edicion'"
+            decoration-muted="state=='inicio'">
+        <field name="name"/>
+        <field name="state"/>
+      </tree>
+      </field>
+    </record>
+    
+    <record model="ir.ui.view" id="pagoaprod.mes_form">
+      <field name="name">Mes Form</field>
+      <field name="model">pagoaprod.mes</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <field name="state" widget="statusbar" clickable="1"/>
+            <button string="Iniciar" type="object" name="iniciar_progressbar"
+                    attrs="{'invisible': [('state','!=','inicio')]}"/>
+            <button string="Confirmar" type="object" name="confirmar_progressbar"
+                    attrs="{'invisible': [('state','!=','edicion')]}"/>
+          </header>
+          <sheet>
+            <group>
+              <field name="name" attrs="{'readonly': [('state','!=','inicio')]}"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+    
+    <record model="ir.ui.view" id="pagoaprod.anno_list">
+      <field name="name">Annos List</field>
+      <field name="model">pagoaprod.anno</field>
+      <field name="arch" type="xml">
+      <tree decoration-success="state=='confirmado'"
+            decoration-info="state=='edicion'"
+            decoration-muted="state=='inicio'">
+        <field name="name"/>
+        <field name="state"/>
+      </tree>
+      </field>
+    </record>
+    
+    <record model="ir.ui.view" id="pagoaprod.anno_form">
+      <field name="name">Anno Form</field>
+      <field name="model">pagoaprod.anno</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <field name="state" widget="statusbar" clickable="1"/>
+            <button string="Iniciar" type="object" name="iniciar_progressbar"
+                    attrs="{'invisible': [('state','!=','inicio')]}"/>
+            <button string="Confirmar" type="object" name="confirmar_progressbar"
+                    attrs="{'invisible': [('state','!=','edicion')]}"/>
+          </header>
+          <sheet>
+            <group>
+              <field name="name" attrs="{'readonly': [('state','!=','inicio')]}"/>
+              <field name="mes_ids" />
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+<record model="ir.ui.view" id="pagoaprod.factura_list">
+      <field name="name">Factura List</field>
+      <field name="model">pagoaprod.factura</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="fecha"/>
+          <field name="importe"/>
+          <field name="socio_id"/> 
+          <field name="observacion"/>
+          <field name="conciliada"/>
+          <field name="entidad_id" invisible='1'/>
+          <field name="factura_linea_ids"  invisible='1'/>
+        </tree>
+      </field>
+    </record>
+    
+    <record model="ir.ui.view" id="pagoaprod.factura_form">
+      <field name="name">Factura Form</field>
+      <field name="model">pagoaprod.factura</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <field name="state" widget="statusbar" clickable="1"/>
+          </header>
+          <sheet>
+            <group>
+              <field name="name" attrs="{'readonly': [('state','!=','edicion')]}"/>
+              <field name="pago" widget='radio' attrs="{'readonly': [('state','!=','edicion')]}"/>
+              <field name="fecha" attrs="{'readonly': [('state','!=','edicion')]}"/>
+              <field name="socio_id" attrs="{'readonly': [('state','!=','edicion')]}"/>
+              <field name="conciliada" widget='boolean'/>
+              <field name="observacion"/>
+              <field name="entidad_id" invisible='1'/>
+              <field name="factura_linea_ids" attrs="{'readonly': [('state','!=','edicion')]}"/>
+              <field name="importe" invisible='1'/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="pagoaprod.factura_linea_list">
+      <field name="name">Detalle Factura List</field>
+      <field name="model">pagoaprod.factura.linea</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="precio"/>
+          <field name="cantidad"/>
+          <field name="unidad_medida"/>
+          <field name="importe" sum ="Total"/>
+          <field name="factura_id" invisible='1'/>
+          </tree>
+      </field>
+    </record>
+    
+    <record model="ir.ui.view" id="pagoaprod.factura_linea_form">
+      <field name="name">Detalle Factura Form</field>
+      <field name="model">pagoaprod.factura.linea</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+          </header>
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="precio"/>
+              <field name="unidad_medida"/>
+              <field name="cantidad"/>
+              <field name="importe"/>
+              <field name="precio_default" invisible='1'/>
+              <field name="factura_id" invisible='1'/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+<record model="ir.ui.view" id="pagoaprod.conciliacion_list">
+  <field name="name">Conciliacion List</field>
+  <field name="model">pagoaprod.conciliacion</field>
+  <field name="arch" type="xml">
+  <tree>
+    <field name="name"/>
+    <field name="socio_id"/>
+    <field name="observacion"/>
+  </tree>
+  </field>
+</record>
+    
+<record model="ir.ui.view" id="pagoaprod.conciliacion_form">
+  <field name="name">Conciliacion Form</field>
+  <field name="model">pagoaprod.conciliacion</field>
+  <field name="arch" type="xml">
+  <form>
+    <sheet>
+      <group>
+        <field name="name"/>
+        <field name="socio_id"/>
+        <field name="observacion"/>
+        <field name="factura_ids" widget='many2many_tag' string='Facturas'/>
+        <field name="entidad_id" invisible='1'/>
+      </group>
+    </sheet>
+  </form>
+  </field>
+ </record>
+
+<record model="ir.ui.view" id="pagoaprod.nomina_anno">
+  <field name="name">Nomina anno List</field>
+  <field name="model">pagoaprod.nomina.anno</field>
+  <field name="arch" type="xml">
+  <tree>
+    <field name="name"/>
+  </tree>
+  </field>
+</record>
+    
+<record model="ir.ui.view" id="pagoaprod.nomina_anno">
+  <field name="name">Nomina anno Form</field>
+  <field name="model">pagoaprod.nomina.anno</field>
+  <field name="arch" type="xml">
+  <form>
+    <sheet>
+      <group>
+        <field name="name"/>
+        <field name="entidad_id" invisible='1'/>
+      </group>
+    </sheet>
+  </form>
+  </field>
+ </record>
+
+  </data>
+</odoo>
