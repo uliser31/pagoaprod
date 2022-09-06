@@ -41,6 +41,7 @@ class AbstractStateFact(models.AbstractModel):
     def pagada_progressbar(self):
         self.write({'state': 'pagada'})
 
+
 class Pagoaprod(models.Model):
     _name = 'pagoaprod.pagoaprod'
     
@@ -82,8 +83,15 @@ class Pagoaprod(models.Model):
                               'Cargo')       
 
     nominaanno_ids = fields.One2many('pagoaprod.nomina.anno',
-                              'entidad_id',
-                              'Nomina anno')                         
+                                     'entidad_id',
+                                     'Nomina anno')                         
+
+    nominames_ids = fields.One2many('pagoaprod.nomina.mes',
+                                    'entidad_id',
+                                    'Nomina mes')                         
+    nomina_ids = fields.One2many('pagoaprod.nomina',
+                                    'entidad_id',
+                                    'Nomina')                         
 
     presidente = fields.Char('Presidente', compute = '_presidente')
     
@@ -349,3 +357,24 @@ class NominaAnno(models.Model):
 
     name = fields.Many2one('pagoaprod.anno',
                             'Año')
+
+class NominaMes(models.Model):
+    _name = 'pagoaprod.nomina.mes'
+    entidad_id = fields.Many2one('pagoaprod.pagoaprod',
+                                  'Entidad',
+                                  default=lambda self: self.env['pagoaprod.pagoaprod']
+                                  .search([], limit=1))
+
+    name = fields.Many2one('pagoaprod.mes',
+                            'Mes')
+
+
+class Nomina(models.Model):
+    _name = 'pagoaprod.nomina'
+    entidad_id = fields.Many2one('pagoaprod.pagoaprod',
+                                  'Entidad',
+                                  default=lambda self: self.env['pagoaprod.pagoaprod']
+                                  .search([], limit=1))
+
+    name = fields.Many2one('pagoaprod.nomina.mes',
+                            'Nomina Mes')

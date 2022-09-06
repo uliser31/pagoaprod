@@ -10,3 +10,5 @@ access_pagoaprod_factura,pagoaprod.factura,model_pagoaprod_factura,,1,1,1,1
 access_pagoaprod_factura_linea,pagoaprod.factura_linea,model_pagoaprod_factura_linea,,1,1,1,1
 access_pagoaprod_factura_conciliacion,pagoaprod.conciliacion,model_pagoaprod_conciliacion,,1,1,1,1
 access_pagoaprod_nomina_anno,pagoaprod.nomina_anno,model_pagoaprod_nomina_anno,,1,1,1,1
+access_pagoaprod_nomina_mes,pagoaprod.nomina_mes,model_pagoaprod_nomina_mes,,1,1,1,1
+access_pagoaprod_nomina,pagoaprod.nomina,model_pagoaprod_nomina,,1,1,1,1

@@ -54,8 +54,14 @@
                 <page string="Conciliaciones">
                   <field name="conciliacion_ids"/>
                 </page>
-                 <page string="Nomina anno">
+                <page string="Nomina anno">
                   <field name="nominaanno_ids"/> 
+                </page>
+                <page string="Nomina mes">
+                  <field name="nominames_ids"/> 
+                </page>
+                <page string="Nomina ">
+                  <field name="nomina_ids"/> 
                 </page>
                 
              </notebook>
@@ -354,7 +360,7 @@
   </field>
  </record>
 
-<record model="ir.ui.view" id="pagoaprod.nomina_anno">
+<record model="ir.ui.view" id="pagoaprod.nomina_anno_tree">
   <field name="name">Nomina anno List</field>
   <field name="model">pagoaprod.nomina.anno</field>
   <field name="arch" type="xml">
@@ -364,9 +370,59 @@
   </field>
 </record>
     
-<record model="ir.ui.view" id="pagoaprod.nomina_anno">
+<record model="ir.ui.view" id="pagoaprod.nomina_anno_form">
   <field name="name">Nomina anno Form</field>
   <field name="model">pagoaprod.nomina.anno</field>
+  <field name="arch" type="xml">
+  <form>
+    <sheet>
+      <group>
+        <field name="name"/>
+        <field name="entidad_id" invisible='1'/>
+      </group>
+    </sheet>
+  </form>
+  </field>
+ </record>
+
+<record model="ir.ui.view" id="pagoaprod.nomina_mes_tree">
+  <field name="name">Nomina mes List</field>
+  <field name="model">pagoaprod.nomina.mes</field>
+  <field name="arch" type="xml">
+  <tree>
+    <field name="name"/>
+  </tree>
+  </field>
+</record>
+    
+<record model="ir.ui.view" id="pagoaprod.nomina_mes_form">
+  <field name="name">Nomina mes Form</field>
+  <field name="model">pagoaprod.nomina.mes</field>
+  <field name="arch" type="xml">
+  <form>
+    <sheet>
+      <group>
+        <field name="name"/>
+        <field name="entidad_id" invisible='1'/>
+      </group>
+    </sheet>
+  </form>
+  </field>
+ </record>
+
+ <record model="ir.ui.view" id="pagoaprod.nomina__tree">
+  <field name="name">Nomina List</field>
+  <field name="model">pagoaprod.nomina</field>
+  <field name="arch" type="xml">
+  <tree>
+    <field name="name"/>
+  </tree>
+  </field>
+</record>
+    
+<record model="ir.ui.view" id="pagoaprod.nomina_form">
+  <field name="name">Nomina Form</field>
+  <field name="model">pagoaprod.nomina</field>
   <field name="arch" type="xml">
   <form>
     <sheet>
