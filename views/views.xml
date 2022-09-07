@@ -45,12 +45,14 @@
                 <page string="Facturas">
                   <field name="factura_ids"/>
                 </page>
+                <!--
                 <page string="Meses">
                   <field name="mes_ids"/>
                 </page>
                 <page string="Annos">
                   <field name="anno_ids"/>
                 </page>
+                -->
                 <page string="Conciliaciones">
                   <field name="conciliacion_ids"/>
                 </page>
@@ -186,11 +188,16 @@
       <field name="name">Meses List</field>
       <field name="model">pagoaprod.mes</field>
       <field name="arch" type="xml">
+      <!--
         <tree decoration-success="state=='confirmado'"
             decoration-info="state=='edicion'"
             decoration-muted="state=='inicio'">
         <field name="name"/>
         <field name="state"/>
+      </tree>
+      -->
+      <tree>
+          <field name="name"/>
       </tree>
       </field>
     </record>
@@ -200,16 +207,21 @@
       <field name="model">pagoaprod.mes</field>
       <field name="arch" type="xml">
         <form>
+          <!--
           <header>
             <field name="state" widget="statusbar" clickable="1"/>
             <button string="Iniciar" type="object" name="iniciar_progressbar"
                     attrs="{'invisible': [('state','!=','inicio')]}"/>
             <button string="Confirmar" type="object" name="confirmar_progressbar"
                     attrs="{'invisible': [('state','!=','edicion')]}"/>
+
           </header>
+          -->
           <sheet>
             <group>
-              <field name="name" attrs="{'readonly': [('state','!=','inicio')]}"/>
+              <field name="name" />
+            <!--  <field name="name" attrs="{'readonly': [('state','!=','inicio')]}"/>
+            -->
             </group>
           </sheet>
         </form>
@@ -220,11 +232,16 @@
       <field name="name">Annos List</field>
       <field name="model">pagoaprod.anno</field>
       <field name="arch" type="xml">
+      <!--
       <tree decoration-success="state=='confirmado'"
             decoration-info="state=='edicion'"
             decoration-muted="state=='inicio'">
         <field name="name"/>
         <field name="state"/>
+      </tree>
+      -->
+      <tree>
+        <field name="name"/>
       </tree>
       </field>
     </record>
@@ -234,6 +251,7 @@
       <field name="model">pagoaprod.anno</field>
       <field name="arch" type="xml">
         <form>
+          <!--
           <header>
             <field name="state" widget="statusbar" clickable="1"/>
             <button string="Iniciar" type="object" name="iniciar_progressbar"
@@ -241,10 +259,13 @@
             <button string="Confirmar" type="object" name="confirmar_progressbar"
                     attrs="{'invisible': [('state','!=','edicion')]}"/>
           </header>
+          -->
           <sheet>
             <group>
-              <field name="name" attrs="{'readonly': [('state','!=','inicio')]}"/>
+              <field name="name" />
+            <!--  <field name="name" attrs="{'readonly': [('state','!=','inicio')]}"/>
               <field name="mes_ids" />
+            -->
             </group>
           </sheet>
         </form>
@@ -364,8 +385,11 @@
   <field name="name">Nomina anno List</field>
   <field name="model">pagoaprod.nomina.anno</field>
   <field name="arch" type="xml">
-  <tree>
-    <field name="name"/>
+  <tree decoration-success="state=='confirmado'"
+        decoration-info="state=='edicion'"
+        decoration-muted="state=='inicio'">
+        <field name="name"/>
+        <field name="state"/>
   </tree>
   </field>
 </record>
@@ -375,10 +399,18 @@
   <field name="model">pagoaprod.nomina.anno</field>
   <field name="arch" type="xml">
   <form>
+    <header>
+      <field name="state" widget="statusbar" clickable="1"/>
+      <button string="Iniciar" type="object" name="iniciar_progressbar"
+              attrs="{'invisible': [('state','!=','inicio')]}"/>
+      <button string="Confirmar" type="object" name="confirmar_progressbar"
+              attrs="{'invisible': [('state','!=','edicion')]}"/>
+    </header>
     <sheet>
       <group>
-        <field name="name"/>
+        <field name="name" attrs="{'readonly': [('state','!=','inicio')]}"/>
         <field name="entidad_id" invisible='1'/>
+        <field name="nominames_ids"/>
       </group>
     </sheet>
   </form>
@@ -389,8 +421,11 @@
   <field name="name">Nomina mes List</field>
   <field name="model">pagoaprod.nomina.mes</field>
   <field name="arch" type="xml">
-  <tree>
-    <field name="name"/>
+  <tree decoration-success="state=='confirmado'"
+        decoration-info="state=='edicion'"
+        decoration-muted="state=='inicio'">
+        <field name="name"/>
+        <field name="state"/>
   </tree>
   </field>
 </record>
@@ -400,10 +435,20 @@
   <field name="model">pagoaprod.nomina.mes</field>
   <field name="arch" type="xml">
   <form>
+    <header>
+      <field name="state" widget="statusbar" clickable="1"/>
+      <button string="Iniciar" type="object" name="iniciar_progressbar"
+              attrs="{'invisible': [('state','!=','inicio')]}"/>
+      <button string="Confirmar" type="object" name="confirmar_progressbar"
+              attrs="{'invisible': [('state','!=','edicion')]}"/>
+    </header>
     <sheet>
       <group>
-        <field name="name"/>
+        <field name="nominaanno_id" readonly='1'/>
+        <field name="name" attrs="{'readonly': [('state','!=','inicio')]}"/>
         <field name="entidad_id" invisible='1'/>
+        <field name="nomina_ids"/>
+        
       </group>
     </sheet>
   </form>
@@ -427,7 +472,8 @@
   <form>
     <sheet>
       <group>
-        <field name="name"/>
+        <field name="anno" readonly='1'/>
+        <field name="name" readonly='1'/>
         <field name="entidad_id" invisible='1'/>
       </group>
     </sheet>

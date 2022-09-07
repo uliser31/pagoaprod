@@ -174,7 +174,7 @@ class Insumos(models.Model):
 class Mes(models.Model):
     _name = 'pagoaprod.mes'
 
-    _inherit = 'pagoaprod.abstract.state'
+    #_inherit = 'pagoaprod.abstract.state'
     
     name = fields.Char('Mes')
 
@@ -186,24 +186,24 @@ class Mes(models.Model):
 class Anno(models.Model):
     _name = 'pagoaprod.anno'
 
-    _inherit = 'pagoaprod.abstract.state'
+    #_inherit = 'pagoaprod.abstract.state'
 
     name = fields.Char('Año')
 
-    mes_ids = fields.Many2many('pagoaprod.mes', string='Meses')
+    #mes_ids = fields.Many2many('pagoaprod.mes', string='Meses')
 
     entidad_id = fields.Many2one('pagoaprod.pagoaprod',
                                  'Entidad',
                                  default=lambda self: self.env['pagoaprod.pagoaprod']
                                  .search([], limit=1))
     
-    def iniciar_progressbar(self):
-        
-        self.mes_ids = [(0, 0, {'name': mes.name})
-                         for mes in self.env['pagoaprod.mes'].search([])
-                          if not len(self.mes_ids)]
-        
-        return super().iniciar_progressbar()
+    #def iniciar_progressbar(self):
+    #    
+    #    self.mes_ids = [(0, 0, {'name': mes.name})
+    #                     for mes in self.env['pagoaprod.mes'].search([])
+    #                      if not len(self.mes_ids)]
+    #    
+    #    return super().iniciar_progressbar()
         
 class Factura(models.Model):
     _name = 'pagoaprod.factura'
@@ -349,7 +349,11 @@ class Conciliacion(models.Model):
 
 
 class NominaAnno(models.Model):
+    
+    _inherit = 'pagoaprod.abstract.state'
+
     _name = 'pagoaprod.nomina.anno'
+    
     entidad_id = fields.Many2one('pagoaprod.pagoaprod',
                                   'Entidad',
                                   default=lambda self: self.env['pagoaprod.pagoaprod']
@@ -357,24 +361,55 @@ class NominaAnno(models.Model):
 
     name = fields.Many2one('pagoaprod.anno',
                             'Año')
+    
+    nominames_ids = fields.One2many('pagoaprod.nomina.mes',
+                                    'nominaanno_id',
+                                    'Nomina mes')
+    
+    def iniciar_progressbar(self):
+        
+        self.nominames_ids = [(0, 0, {'name': mes.id})
+                             for mes in self.env['pagoaprod.mes'].search([])
+                             if not len(self.nominames_ids)]
+        return super().iniciar_progressbar()
+
 
 class NominaMes(models.Model):
     _name = 'pagoaprod.nomina.mes'
+
+    _inherit = 'pagoaprod.abstract.state'
+    
     entidad_id = fields.Many2one('pagoaprod.pagoaprod',
-                                  'Entidad',
-                                  default=lambda self: self.env['pagoaprod.pagoaprod']
-                                  .search([], limit=1))
+                                 'Entidad',
+                                 default=lambda self: self.env['pagoaprod.pagoaprod']
+                                 .search([], limit=1))
 
     name = fields.Many2one('pagoaprod.mes',
                             'Mes')
+    
+    nominaanno_id = fields.Many2one('pagoaprod.nomina.anno',
+                                    'Nomina Anno',
+                                    default=lambda self: self.env['pagoaprod.nomina.anno']
+                                    .search([], limit=1))
+
+    nomina_ids = fields.One2many('pagoaprod.nomina',
+                                 'name',
+                                 'Nomina')
 
 
 class Nomina(models.Model):
     _name = 'pagoaprod.nomina'
+    
     entidad_id = fields.Many2one('pagoaprod.pagoaprod',
                                   'Entidad',
                                   default=lambda self: self.env['pagoaprod.pagoaprod']
                                   .search([], limit=1))
 
     name = fields.Many2one('pagoaprod.nomina.mes',
-                            'Nomina Mes')
+                           'Nomina',
+                           default=lambda self: self.env['pagoaprod.nomina.mes']
+                           .search([('state','=','edicion')], limit=1))
+    
+    anno = fields.Char('Anno',related='name.nominaanno_id.name.name')
+
+    sin_mes_edicion = fields.Char(default='No se encontro ningun mes en estado Edicion. Favor de revisar ')

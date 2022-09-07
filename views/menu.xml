@@ -118,13 +118,13 @@
       <field name="res_model">pagoaprod.conciliacion</field>
       <field name="view_mode">tree,form</field>
     </record>
-<!--
+
     <record model="ir.actions.act_window" id="pagoaprod.action_window_nomina">
       <field name="name">Nomina</field>
       <field name="res_model">pagoaprod.nomina</field>
       <field name="view_mode">tree,form</field>
     </record>
--->
+
     <record model="ir.actions.act_window" id="pagoaprod.action_window_cargo">
       <field name="name">Cargo</field>
       <field name="res_model">pagoaprod.cargo</field>
@@ -152,8 +152,10 @@
     <menuitem name="Productos" id="pagoaprod.menu_producto" parent="pagoaprod.menu_entidad" action="pagoaprod.action_window_producto" sequence="30"/>
     <!--
     <menuitem name="Insumos/Servicios" id="pagoaprod.menu_insumo" parent="pagoaprod.menu_entidad" action="pagoaprod.action_window_insumo" sequence="41"/>
-    <menuitem name="Nomina" id="pagoaprod.menu_nomina" parent="pagoaprod.menu_entidad" action="pagoaprod.action_window_nomina" sequence="14"/>
-
+    -->
+    <menuitem name="Nomina" id="pagoaprod.menu_nomina" parent="pagoaprod.menu_root" sequence="50"/>
+    <menuitem name="Nomina" id="pagoaprod.menu_nomina_nomina" parent="pagoaprod.menu_nomina" action="pagoaprod.action_window_nomina" sequence="42"/>
+<!--
     
     <menuitem name="Producto" id="pagoaprod.menu_producto_producto" parent="pagoaprod.menu_producto" action="pagoaprod.action_window_producto" sequence="31"/>
     <menuitem name="Categoria" id="pagoaprod.menu_categoria" parent="pagoaprod.menu_producto" action="pagoaprod.action_window_categoria" sequence="32"/>
