@@ -455,7 +455,7 @@
   </field>
  </record>
 
- <record model="ir.ui.view" id="pagoaprod.nomina__tree">
+ <record model="ir.ui.view" id="pagoaprod.nomina_tree">
   <field name="name">Nomina List</field>
   <field name="model">pagoaprod.nomina</field>
   <field name="arch" type="xml">
@@ -473,13 +473,47 @@
     <sheet>
       <group>
         <field name="anno" readonly='1'/>
-        <field name="name" readonly='1'/>
+        <field name="nominames_id" readonly='1'/>
         <field name="entidad_id" invisible='1'/>
+        <field name="name"/>
+        <field name="fecha"/>
+        <field name="conciliacion"/>
+        <field name="factura"/>
+        <field name="producto_id"/>
+        <field name="nominalinea_ids"/>
       </group>
     </sheet>
   </form>
   </field>
  </record>
+
+ <record model="ir.ui.view" id="pagoaprod.nomina_linea_tree">
+  <field name="name">Nomina Detalle List</field>
+  <field name="model">pagoaprod.nomina.linea</field>
+  <field name="arch" type="xml">
+  <tree>
+    <field name="name"/>
+  </tree>
+  </field>
+</record>
+    
+<record model="ir.ui.view" id="pagoaprod.nomina_linea_form">
+  <field name="name">Nomina Detalle Form</field>
+  <field name="model">pagoaprod.nomina.linea</field>
+  <field name="arch" type="xml">
+  <form>
+    <sheet>
+      <group>
+        <field name="nomina_id" readonly='1'/>
+        <field name="name"/>
+        <field name="entidad_id" invisible='1'/>
+        <field name="cantprod"/>
+        <field name="factura_ids"/>
+      </group>
+    </sheet>
+  </form>
+  </field>
+</record>
 
   </data>
 </odoo>

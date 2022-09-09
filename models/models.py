@@ -229,8 +229,8 @@ class Factura(models.Model):
                                         'factura_id',
                                         'Detalle')
 
-     #detallenomina_ids = fields.Many2many('pagoaprod.detallenomina',
-     #                                     string='Detalle Nomina')
+    nomina_linea_ids = fields.Many2many('pagoaprod.nomina.linea',
+                                  string='Detalle Nomina')
 
     entidad_id = fields.Many2one('pagoaprod.pagoaprod',
                                  'Entidad',
@@ -244,9 +244,9 @@ class Factura(models.Model):
                                 compute='_esta_conciliada',
                                 store=True)
 
-     #liquidada = fields.Boolean(String='Liquidada',
-     #                           compute='_esta_liquidada',
-     #                           store=True)
+    liquidada = fields.Boolean(String='Liquidada',
+                               compute='_esta_liquidada',
+                               store=True)
 
     pago = fields.Selection([('efectivo', 'Efectivo'),
                              ('credito', 'Crédito'),
@@ -254,11 +254,7 @@ class Factura(models.Model):
                              default='pendiente',
                              string='Forma de Pago')
 
-    
-
-     #detalle_nomina_ids = fields.Many2many('pagoaprod.detallenomina',
-     #                                      'Nomina')
-
+  
     @api.depends('factura_linea_ids.importe')
     def _importe_factura(self):
       for r in self:
@@ -277,10 +273,10 @@ class Factura(models.Model):
           
 
 
-     #@api.depends('detallenomina_ids')
-     #def _esta_liquidada(self):
-     #  for r in self:
-     #      r.liquidada = True if len(r.detallenomina_ids) > 0 else False
+    @api.depends('nomina_linea_ids')
+    def _esta_liquidada(self):
+      for r in self:
+        r.liquidada = True if len(r.nomina_linea_ids) > 0 else False
 
 
 class FacturaLinea(models.Model):
@@ -393,7 +389,7 @@ class NominaMes(models.Model):
                                     .search([], limit=1))
 
     nomina_ids = fields.One2many('pagoaprod.nomina',
-                                 'name',
+                                 'nominames_id',
                                  'Nomina')
 
 
@@ -405,11 +401,52 @@ class Nomina(models.Model):
                                   default=lambda self: self.env['pagoaprod.pagoaprod']
                                   .search([], limit=1))
 
-    name = fields.Many2one('pagoaprod.nomina.mes',
-                           'Nomina',
-                           default=lambda self: self.env['pagoaprod.nomina.mes']
-                           .search([('state','=','edicion')], limit=1))
+    nominames_id = fields.Many2one('pagoaprod.nomina.mes',
+                                   'Nomina',
+                                   default=lambda self: self.env['pagoaprod.nomina.mes']
+                                   .search([('state','=','edicion')], limit=1))
     
-    anno = fields.Char('Anno',related='name.nominaanno_id.name.name')
+    anno = fields.Char('Anno',
+                       related='nominames_id.nominaanno_id.name.name')
 
-    sin_mes_edicion = fields.Char(default='No se encontro ningun mes en estado Edicion. Favor de revisar ')
+    name = fields.Char('Periodo pago')
+
+    fecha = fields.Date('Fecha confección')
+    
+    conciliacion = fields.Char('Conciliación no.')
+
+    factura = fields.Char('Factura no.')
+
+    moneda = fields.Char('moneda', default="$")
+
+    producto_id = fields.Many2one('product.product',
+                                        'Producto')
+
+    nominalinea_ids = fields.One2many('pagoaprod.nomina.linea',
+                                      'nomina_id',
+                                      'Detalle Nomina')
+
+class NominaLinea(models.Model):
+    _name = 'pagoaprod.nomina.linea'
+
+    entidad_id = fields.Integer(default = lambda self: self.env['pagoaprod.pagoaprod']
+                                .search([], limit=1).name.id)
+
+    name = fields.Many2one('res.partner',
+                              'Socio',
+                              domain="[('parent_id','=',entidad_id)]")
+    
+    nomina_id = fields.Many2one('pagoaprod.nomina',
+                                'Nomina')
+
+    cantprod = fields.Float('Producción neta',
+                            (8,2))
+
+    factura_ids = fields.Many2many('pagoaprod.factura',
+                                      string='Factura',
+                                      domain="[('socio_id', '=', name),"
+                                             "('conciliada', '=', True),"
+                                             "('liquidada', '=', False)]")
+#                                             ,"
+#                                             "('pago', 'in', ['pendiente','credito'])"
+#                                             ",('liquidada', '=', False)]")                        
