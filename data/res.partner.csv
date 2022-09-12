@@ -1,4 +1,4 @@
 id,name,cargo_id:id,company_type,parent_id:id,productor,producto_ids:id
 entidad_partner_id,CCS Fernando Echenique,,company,,,
 socio_partner_01,Uliser Barrero Rodríguez,presidente_id,person,entidad_partner_id,1,"tmpl_arroz_cascara,tmpl_arroz_consumo"
-socio_partner_02,Periquito Perez,economico_id,person,entidad_partner_id,1,"tmpl_arroz_cascara,tmpl_arroz_consumo"
+socio_partner_02,Periquito Perez,economico_id,person,entidad_partner_id,1,"tmpl_arroz_cascara"

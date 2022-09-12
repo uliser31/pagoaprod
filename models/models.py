@@ -208,7 +208,7 @@ class Anno(models.Model):
 class Factura(models.Model):
     _name = 'pagoaprod.factura'
 
-    _inherit = 'pagoaprod.abstract.state.fact'
+    #_inherit = 'pagoaprod.abstract.state.fact'
 
     name = fields.Char('No.')
 
@@ -419,7 +419,7 @@ class Nomina(models.Model):
 
     moneda = fields.Char('moneda', default="$")
 
-    producto_id = fields.Many2one('product.product',
+    producto_id = fields.Many2one('product.template',
                                         'Producto')
 
     nominalinea_ids = fields.One2many('pagoaprod.nomina.linea',
@@ -432,13 +432,30 @@ class NominaLinea(models.Model):
     entidad_id = fields.Integer(default = lambda self: self.env['pagoaprod.pagoaprod']
                                 .search([], limit=1).name.id)
 
-    name = fields.Many2one('res.partner',
-                              'Socio',
-                              domain="[('parent_id','=',entidad_id)]")
-    
     nomina_id = fields.Many2one('pagoaprod.nomina',
                                 'Nomina')
 
+    producto_tmpl  = fields.Many2one(related = 'nomina_id.producto_id')
+    
+    um = fields.Many2one(related='producto_tmpl.uom_id', 
+                         string ='Unidad de medida') 
+
+    precio = fields.Float('Precio',
+                          (8,2))
+    #attribute_id = fields.Many2one(related = 'producto_tmpl.attribute_id')
+
+    name = fields.Many2one('res.partner',
+                              'Socio',
+                              domain="[('parent_id','=',entidad_id),\
+                                       ('producto_ids','like',producto_tmpl)\
+                              ]")
+    
+
+    producto_id = fields.Many2one('product.template.attribute.value',
+                                  'Tipo de producto',
+                                  domain="[('attribute_line_id.product_tmpl_id','=', producto_tmpl)]"
+                                  )
+    
     cantprod = fields.Float('Producción neta',
                             (8,2))
 

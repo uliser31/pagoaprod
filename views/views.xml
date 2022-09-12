@@ -283,6 +283,7 @@
           <field name="socio_id"/> 
           <field name="observacion"/>
           <field name="conciliada"/>
+          <field name="liquidada"/>
           <field name="entidad_id" invisible='1'/>
           <field name="factura_linea_ids"  invisible='1'/>
         </tree>
@@ -294,19 +295,28 @@
       <field name="model">pagoaprod.factura</field>
       <field name="arch" type="xml">
         <form>
+        <!--
           <header>
             <field name="state" widget="statusbar" clickable="1"/>
           </header>
+        -->  
           <sheet>
             <group>
+             <!--
               <field name="name" attrs="{'readonly': [('state','!=','edicion')]}"/>
               <field name="pago" widget='radio' attrs="{'readonly': [('state','!=','edicion')]}"/>
               <field name="fecha" attrs="{'readonly': [('state','!=','edicion')]}"/>
               <field name="socio_id" attrs="{'readonly': [('state','!=','edicion')]}"/>
+              <field name="name" attrs="{'readonly': [('state','!=','edicion')]}"/>
+             -->
+              <field name="pago" widget='radio' />
+              <field name="fecha"/>
+              <field name="socio_id"/>
               <field name="conciliada" widget='boolean'/>
+              <field name="liquidada" widget='boolean'/>
               <field name="observacion"/>
               <field name="entidad_id" invisible='1'/>
-              <field name="factura_linea_ids" attrs="{'readonly': [('state','!=','edicion')]}"/>
+              <field name="factura_linea_ids" />
               <field name="importe" invisible='1'/>
             </group>
           </sheet>
@@ -479,7 +489,7 @@
         <field name="fecha"/>
         <field name="conciliacion"/>
         <field name="factura"/>
-        <field name="producto_id"/>
+        <field name="producto_id"/> 
         <field name="nominalinea_ids"/>
       </group>
     </sheet>
@@ -504,10 +514,14 @@
   <form>
     <sheet>
       <group>
+        <field name="producto_tmpl"/>
         <field name="nomina_id" readonly='1'/>
         <field name="name"/>
         <field name="entidad_id" invisible='1'/>
+        <field name ="producto_id"/>
         <field name="cantprod"/>
+        <field name="precio"/>
+        <field name="um"/>
         <field name="factura_ids"/>
       </group>
     </sheet>
