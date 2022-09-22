@@ -309,14 +309,16 @@
               <field name="socio_id" attrs="{'readonly': [('state','!=','edicion')]}"/>
               <field name="name" attrs="{'readonly': [('state','!=','edicion')]}"/>
              -->
-              <field name="pago" widget='radio' />
-              <field name="fecha"/>
-              <field name="socio_id"/>
+              <field name="name" attrs="{'readonly': [('conciliada','=',True)]}"/>
+              <field name="pago" widget='radio' attrs="{'readonly': [('conciliada','=',True)]}"/>
+              <field name="fecha" attrs="{'readonly': [('conciliada','=',True)]}"/>
+              <field name="socio_id" attrs="{'readonly': [('conciliada','=',True)]}"/>
               <field name="conciliada" widget='boolean'/>
               <field name="liquidada" widget='boolean'/>
               <field name="observacion"/>
               <field name="entidad_id" invisible='1'/>
-              <field name="factura_linea_ids" />
+              <field name="factura_linea_ids" attrs="{'readonly': [('conciliada','=',True)]}"/>
+              <field name="parent_id" invisible='1'/>
               <field name="importe" invisible='1'/>
             </group>
           </sheet>
@@ -385,6 +387,7 @@
         <field name="observacion"/>
         <field name="factura_ids" widget='many2many_tag' string='Facturas'/>
         <field name="entidad_id" invisible='1'/>
+        <field name="parent_id" invisible='1'/>
       </group>
     </sheet>
   </form>
@@ -490,6 +493,9 @@
         <field name="conciliacion"/>
         <field name="factura"/>
         <field name="producto_id"/> 
+        <field name="importe"/> 
+        <field name="importe_distribuido"/> 
+        <field name="importe_nodistribuido"/> 
         <field name="nominalinea_ids"/>
       </group>
     </sheet>
@@ -503,6 +509,7 @@
   <field name="arch" type="xml">
   <tree>
     <field name="name"/>
+    <field name="importe_neto"/>
   </tree>
   </field>
 </record>
@@ -519,11 +526,22 @@
         <field name="name"/>
         <field name="entidad_id" invisible='1'/>
         <field name ="producto_id"/>
+        <field name="um"/>
         <field name="cantprod"/>
         <field name="precio"/>
-        <field name="um"/>
+        <field name="importe_neto"/>
+      </group>  
+      <group string='Descuentos'>
+        <field name="aporte2"/>
+        <field name="corte"/>
+        <field name="otro"/>
+        <field name="importe_factura"/>
+        <field name="importe_credito"/>
+      </group>  
+      <group>
+        <field name="importe"/>
         <field name="factura_ids"/>
-      </group>
+      </group>  
     </sheet>
   </form>
   </field>

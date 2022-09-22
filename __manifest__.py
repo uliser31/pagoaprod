@@ -30,6 +30,7 @@
         'views/partner.xml',
         'views/reporte_conciliacion.xml',
         'views/reporte_factura.xml',
+        'views/reporte_nomina.xml',
         'data/pagoaprod.cargo.csv',
     # En res.partner defino los datos de la entidad y socios    
         'data/res.partner.csv',

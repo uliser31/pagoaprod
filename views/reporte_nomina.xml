@@ -1,0 +1,163 @@
+<odoo>
+  <data>
+      <report id="report_nomina_action"
+              string="Nómina"
+              model="pagoaprod.nomina"
+              report_type="qweb-pdf"
+              name="pagoaprod.report_nomina_template" >
+      </report>
+
+    <template id="report_nomina_template">
+         <t t-call="web.html_container">
+             <t t-foreach="docs" t-as="o">
+                 <t t-call="web.external_layout">
+                     <div class="page">          <!-- Report page content -->
+                         <div class="row">
+                            <div class="col-xs-12">
+                              <h3>CONTROL DE PAGO AL SECTOR CAMPESINO Y COOPERATIVO</h3>
+                            </div>
+                            <div class="col-xs-6">
+                               134-145
+                            </div>
+                            <div class="col-xs-6">
+                              Periodo de pago: <span t-field="o.name"/>
+                            </div>
+                            <div class="col-xs-6">
+                               Extracción de efectivo Pago de Arroz
+                            </div>
+                            <div class="col-xs-6">
+                              Fecha de confeccionado el anexo: <span t-field="o.fecha"/>
+                            </div>
+                            <div class="col-xs-6">
+                               Producción: <span t-field="o.producto_id"/>
+                            </div>
+                            <div class="col-xs-6">
+                              Conciliación No.: <span t-field="o.conciliacion"/>
+                            </div>
+                            <div class="col-xs-6">
+
+                            </div>
+                            <div class="col-xs-6">
+                              <strong>
+                                  Factura No.: <span t-field="o.factura"/>
+                              </strong>
+                            </div>
+
+
+                            <table class="table table-bordered">
+                            <!-- Table header -->
+                                <tr>
+                                   <th>Nombre y Apellidos</th>
+                                   <th>TN Neto</th>
+                                   <th>Precio</th>
+                                   <th>Importe</th>
+                                   <th>Aporte 2%</th>
+                                   <th>Corte</th>
+                                   <th>A Crédito</th>
+                                   <th>Facturas</th>
+                                   <th>A Transferir</th>
+                               </tr>
+                               <!-- Table rows -->
+                               <t t-foreach="o.nominalinea_ids" t-as="f">
+
+                                 <!-- Each row -->
+                                 <tr>
+                                   <td>
+                                     <span t-field="f.name"/>
+                                   </td>
+                                   <td>
+                                     <span t-field="f.cantprod"/>
+                                   </td>
+                                   <td>
+                                     <span t-field="f.precio"/>
+                                   </td>
+
+                                   <td>
+                                     <span t-field="f.importe_neto"/>
+                                   </td>
+                                   <td>
+                                     <span t-field="f.aporte2"/>
+                                   </td>
+                                   <td>
+                                     <span t-field="f.corte"/>
+                                   </td>
+                                   <td>
+                                     <span t-field="f.importe_credito"/>
+                                   </td>
+                                   <td>
+                                     <span t-field="f.importe_factura"/>
+                                   </td>
+                                   <td>
+                                     <span t-field="f.importe"/>
+                                   </td>
+
+                                 </tr>
+
+                                 <!-- Totals in a last row -->
+
+                                <t t-if="f_last">
+                                   <tr>
+                                     <td>
+                                       <p class="text-right">
+                                           <strong>
+                                               TOTAL
+                                           </strong>
+                                       </p>
+                                     </td>
+
+                                     <td >
+                                       <strong>
+                                           <t t-esc="sum(i.cantprod for i in o.nominalinea_ids)"/>
+                                       </strong>
+                                     </td>
+                                     <td></td>
+
+
+                                     <td >
+                                       <strong>
+                                           <t t-esc="sum(i.importe_neto for i in o.nominalinea_ids)"/>
+                                      <!--     t-esc-options='{"widget": "monetary","display_currency":"o.moneda"}'-->
+                                       </strong>
+                                     </td>
+                                      <td >
+                                       <strong>
+                                           <t t-esc="sum(i.aporte2 for i in o.nominalinea_ids)"/>
+                                         <!--  t-esc-options='{"widget": "monetary","display_currency":"o.moneda"}' -->
+                                       </strong>
+                                     </td>
+                                     <td >
+                                       <strong>
+                                           <t t-esc="sum(i.corte for i in o.nominalinea_ids)"/>
+                                       </strong>
+                                     </td>
+                                     <td >
+                                       <strong>
+                                           <t t-esc="sum(i.importe_credito for i in o.nominalinea_ids)"/>
+                                       </strong>
+                                     </td>
+                                     <td >
+                                       <strong>
+                                           <t t-esc="sum(i.importe_factura for i in o.nominalinea_ids)"/>
+                                       </strong>
+                                     </td>
+                                     <td >
+                                       <strong>
+                                           <t t-esc="sum(i.importe for i in o.nominalinea_ids)"/>
+                                       </strong>
+                                     </td>
+
+                                   </tr>
+
+                                 </t>
+                              </t>
+                            </table>
+
+                         </div>
+                     </div>
+
+                 </t>
+             </t>
+         </t>
+    </template>
+  </data>
+</odoo>

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from re import M
 from odoo import models, fields, api
 
 class AbstractState(models.AbstractModel):
@@ -210,12 +211,20 @@ class Factura(models.Model):
 
     #_inherit = 'pagoaprod.abstract.state.fact'
 
+    entidad_id = fields.Many2one('pagoaprod.pagoaprod',
+                                 'Entidad',
+                                 default=lambda self: self.env['pagoaprod.pagoaprod']
+                                 .search([], limit=1))
+    
+    parent_id = fields.Integer(related ="entidad_id.name.id" )
+
     name = fields.Char('No.')
 
     fecha = fields.Date('Fecha')
-
+      
     socio_id = fields.Many2one('res.partner',
-                                         'Socio')
+                              'Socio',
+                              domain="[('parent_id','=',parent_id)]")
     
     socio = fields.Char( related='socio_id.name')
 
@@ -232,10 +241,6 @@ class Factura(models.Model):
     nomina_linea_ids = fields.Many2many('pagoaprod.nomina.linea',
                                   string='Detalle Nomina')
 
-    entidad_id = fields.Many2one('pagoaprod.pagoaprod',
-                                 'Entidad',
-                                 default=lambda self: self.env['pagoaprod.pagoaprod']
-                                 .search([], limit=1))
 
     conciliacion_ids = fields.Many2many('pagoaprod.conciliacion',
                                         String='Conciliacion')
@@ -263,15 +268,7 @@ class Factura(models.Model):
     @api.depends('conciliacion_ids')
     def _esta_conciliada(self):
       for r in self:
-          if len(r.conciliacion_ids) :
-            r.conciliada_progressbar()
-            r.conciliada = True
-          else :
-            r.conciliada = False
-
-      #r.conciliada = True if len(r.conciliacion_ids) > 0 else False
-          
-
+          r.conciliada = True if len(r.conciliacion_ids) > 0 else False
 
     @api.depends('nomina_linea_ids')
     def _esta_liquidada(self):
@@ -322,26 +319,29 @@ class FacturaLinea(models.Model):
 
 
 class Conciliacion(models.Model):
-         _name = 'pagoaprod.conciliacion'
+    _name = 'pagoaprod.conciliacion'
 
-         name = fields.Date('Fecha')
+    name = fields.Date('Fecha')
 
-         entidad_id = fields.Many2one('pagoaprod.pagoaprod',
-                                      'Entidad',
-                                      default=lambda self: self.env['pagoaprod.pagoaprod']
-                                      .search([], limit=1))
+    entidad_id = fields.Many2one('pagoaprod.pagoaprod',
+                                 'Entidad',
+                                 default=lambda self: self.env['pagoaprod.pagoaprod']
+                                 .search([], limit=1))
 
-         socio_id = fields.Many2one('res.partner',
-                                    'Socio')
+    parent_id = fields.Integer(related ="entidad_id.name.id" )
 
-         observacion= fields.Char('Observación')
+    socio_id = fields.Many2one('res.partner',
+                               'Socio',
+                               domain="[('parent_id','=',parent_id)]")
 
-         socio = fields.Char(related='socio_id.name')
+    observacion= fields.Char('Observación')
 
-         factura_ids = fields.Many2many('pagoaprod.factura',
-                                        String='Factura',
-                                        domain="[('socio_id', '=', socio_id),"
-                                               "('conciliada', '=', False)]")
+    socio = fields.Char(related='socio_id.name')
+
+    factura_ids = fields.Many2many('pagoaprod.factura',
+                                   String='Factura',
+                                   domain="[('socio_id', '=', socio_id),"
+                                          "('conciliada', '=', False)]")
 
 
 class NominaAnno(models.Model):
@@ -421,10 +421,31 @@ class Nomina(models.Model):
 
     producto_id = fields.Many2one('product.template',
                                         'Producto')
+    
+    importe = fields.Float('Importe',
+                           (8,2))
+
+    importe_distribuido = fields.Float('Importe distribuido',
+                                        (8,2),
+                                        compute='_importe_distribuido')
+
+    importe_nodistribuido = fields.Float('Importe no distribuido',
+                                        (8,2),
+                                        compute='_importe_nodistribuido')
 
     nominalinea_ids = fields.One2many('pagoaprod.nomina.linea',
                                       'nomina_id',
                                       'Detalle Nomina')
+    
+    @api.depends('nominalinea_ids.importe_neto')
+    def _importe_distribuido(self):
+        for r in self:
+            r.importe_distribuido =  sum(linea.importe_neto for linea in r.nominalinea_ids)
+    
+    @api.depends('importe','importe_distribuido','importe_nodistribuido')
+    def _importe_nodistribuido(self):
+        for r in self:
+            r.importe_nodistribuido =  r.importe -r.importe_distribuido
 
 class NominaLinea(models.Model):
     _name = 'pagoaprod.nomina.linea'
@@ -440,8 +461,6 @@ class NominaLinea(models.Model):
     um = fields.Many2one(related='producto_tmpl.uom_id', 
                          string ='Unidad de medida') 
 
-    precio = fields.Float('Precio',
-                          (8,2))
     #attribute_id = fields.Many2one(related = 'producto_tmpl.attribute_id')
 
     name = fields.Many2one('res.partner',
@@ -451,11 +470,19 @@ class NominaLinea(models.Model):
                               ]")
     
 
-    producto_id = fields.Many2one('product.template.attribute.value',
-                                  'Tipo de producto',
-                                  domain="[('attribute_line_id.product_tmpl_id','=', producto_tmpl)]"
-                                  )
+    #producto_id = fields.Many2one('product.template.attribute.value',
+    #                              'Tipo de producto',
+    #                              domain="[('attribute_line_id.product_tmpl_id','=', producto_tmpl)]"
+    #                              )
     
+    producto_id = fields.Many2one('product.product', 
+                                   'Producto',
+                                   domain="[('product_tmpl_id','=', producto_tmpl)]"
+                                   )
+    
+    precio = fields.Float('Precio',
+                          (8,2))
+
     cantprod = fields.Float('Producción neta',
                             (8,2))
 
@@ -466,4 +493,65 @@ class NominaLinea(models.Model):
                                              "('liquidada', '=', False)]")
 #                                             ,"
 #                                             "('pago', 'in', ['pendiente','credito'])"
-#                                             ",('liquidada', '=', False)]")                        
+#                                             ",('liquidada', '=', False)]")   
+
+    importe_neto = fields.Float('Importe neto',
+                                (8,2),
+                                compute='_importe_neto')
+    
+    aporte2 = fields.Float('Aporte 2%',
+                              (8,2),
+                              compute='_aporte2')                            
+
+    corte = fields.Float('Corte',
+                         (8,2))
+
+    otro = fields.Float('Otros',
+                        (8,2))
+
+    importe = fields.Float('A tranferir',
+                           (8,2),
+                           compute='_importe')
+
+    importe_factura = fields.Float('Facturas',
+                                  (8,2),
+                                   compute='_importe_factura')
+
+    importe_credito = fields.Float('Crédito',
+                                   (8,2),
+                                   compute='_importe_credito')
+
+    @api.onchange('producto_id')
+    def _precio_default(self):
+        self.precio = self.producto_id.lst_price                   
+
+    @api.depends('cantprod', 'precio')
+    def _importe_neto(self):
+        for r in self:
+            r.importe_neto = r.precio * r.cantprod    
+    
+    @api.depends('importe_neto')
+    def _aporte2(self):
+        for r in self:
+            r.aporte2 = r.importe_neto * 0.02
+
+    @api.depends('factura_ids.importe')
+    def _importe_factura(self):
+        for r in self:
+            total = 0
+            for mi_factura in r.factura_ids:
+                total += mi_factura.importe if mi_factura.pago == 'pendiente' else 0
+            r.importe_factura = total
+
+    @api.depends('factura_ids.importe')
+    def _importe_credito(self):
+        for r in self:
+            total = 0
+            for mi_factura in r.factura_ids:
+                total += mi_factura.importe if mi_factura.pago == 'credito' else 0
+            r.importe_credito = total
+
+    @api.depends('importe_neto', 'aporte2', 'corte', 'otro','importe_factura','importe_credito')
+    def _importe(self):
+        for r in self:
+            r.importe = r.importe_neto - r.aporte2 - r.corte - r.otro - r.importe_factura - r.importe_credito        
